@@ -17,9 +17,9 @@ class SBoard(object):
 
     EMPTY_LIST = np.array([0, 0, 0, 0, 0, 0, 0, 0, 0])
 
-    def __init__(self):
+    def __init__(self, difficulty: int):
         self.solved_board = self.__generate_solved_board()
-        self.level_board = self.__generate_level_board(self.solved_board, 'easy')
+        self.level_board = self.__generate_level_board(self.solved_board, difficulty_level=difficulty)
 
     def __generate_solved_board(self):
         standard_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -50,14 +50,17 @@ class SBoard(object):
                     grid[num - 2] = SBoard.EMPTY_LIST
                     num -= 3
             num += 1
-
         # last row
         for i in range(9):
             grid[8][i] = self.__find_missing_num(grid.T[i])
         return grid
 
-    def __generate_level_board(self, grid: numpy.ndarray, difficulty_level: str):
-        return ''
+    @staticmethod
+    def __generate_level_board(grid: numpy.ndarray, difficulty_level: int):
+        delete_amount = SBoard.DIFFICULTIES[difficulty_level]
+        for i in range(delete_amount):
+            grid[random.randint(0, 8)][random.randint(0, 8)] = 0
+        return grid
 
     @staticmethod
     def __find_missing_num(col) -> int:
@@ -114,6 +117,6 @@ class SBoard(object):
 
 
 if __name__ == '__main__':
-    b1 = SBoard()
-    print(b1)
+    b1 = SBoard(difficulty=3)
+    print(b1.level_board)
     print("--- %s seconds ---" % (time.time() - start_time))
