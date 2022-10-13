@@ -1,9 +1,8 @@
 import random
-from builtins import type
-
-import numpy
 import numpy as np
+import numpy
 import time
+
 
 start_time = time.time()
 
@@ -19,7 +18,8 @@ class SBoard(object):
 
     def __init__(self, difficulty: int):
         self.solved_board = self.__generate_solved_board()
-        self.level_board = self.__generate_level_board(self.solved_board, difficulty_level=difficulty)
+        self.__solved_board_copy = self.solved_board.copy()
+        self.level_board = self.__generate_level_board(self.__solved_board_copy, difficulty_level=difficulty)
 
     def __generate_solved_board(self):
         standard_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -37,7 +37,6 @@ class SBoard(object):
         ])
         num = 0
         while num <= 7:
-            # first extra row
             np.random.shuffle(standard_list)
             grid[num] = standard_list
             while not self.__are_columns_valid(grid=grid):
@@ -50,10 +49,10 @@ class SBoard(object):
                     grid[num - 2] = SBoard.EMPTY_LIST
                     num -= 3
             num += 1
-        # last row
         for i in range(9):
             grid[8][i] = self.__find_missing_num(grid.T[i])
         return grid
+
 
     @staticmethod
     def __generate_level_board(grid: numpy.ndarray, difficulty_level: int):
@@ -92,7 +91,6 @@ class SBoard(object):
     def __are_blocks_valid(grid: numpy.ndarray) -> bool:
         '''
         :param grid:
-        :param state:
         progress of 3*3 rows
         :return:
         '''
@@ -106,6 +104,9 @@ class SBoard(object):
                     if value != 1:
                         return False
         return True
+
+    def __clean_grid(self):
+        pass
 
     def __str__(self):
         result = str(self.solved_board)
