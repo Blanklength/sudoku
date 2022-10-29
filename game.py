@@ -7,7 +7,7 @@ from Scenes.game_scene import GameScene
 pygame.init()
 
 # Fenster öffnen
-screen = pygame.display.set_mode((640, 480))
+screen = pygame.display.set_mode((900, 480))
 
 # Titel für Fensterkopf
 pygame.display.set_caption("Sudoku")
